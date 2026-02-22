@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import {useAuth} from './hooks/useAuth'
+import { useAuthContext } from './context/AuthContext'
 import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
+import NewTrip from './pages/NewTrip'
 import Login from './pages/Auth/Login'
 import Signup from './pages/Auth/Signup'
 import Layout from './components/Layout/Layout'
@@ -9,7 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
 
-  const { user, loading } = useAuth()
+  const { user, loading } = useAuthContext()
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -33,8 +34,23 @@ export default function App() {
                 <Dashboard />
               </ProtectedRoute>
             } 
-            />
-              
+          />
+          <Route
+            path="/new-trip"
+            element={
+              <ProtectedRoute>
+                <NewTrip />
+              </ProtectedRoute>
+            } 
+          />
+          <Route
+            path="/trip/:id"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
         </Route>
         {/* 404 */}
         <Route path="*" element={<Navigate to="/" />} />
